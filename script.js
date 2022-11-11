@@ -1,127 +1,180 @@
-let grid = 2
-let numberOfPlayer = 2
 let array = []
-let htmlGrid = document.querySelector("#grid")
-htmlGrid.classList.add('row-cols-'+grid)
 class Player{
     constructor(grid) {
         this.grid = grid
-        this.my = this.createInitial()
-        this.color = Math.floor(Math.random()*16777215).toString(16);
+        this.my = this.createInitial(grid)
+        this.color = "#"+Math.floor(Math.random()*16777215).toString(16);
     }
     place(index){
-        console.log(this)
-
-        // console.log(this.my[this.get2dFirst(index)][this.get2dSecond(index)])
-        console.log(this.my[0][0])
-        console.log(this.my[0][1])
-        console.log(this.my[1][0])
-        console.log(this.my[1][1])
-        // this.my[this.get2dFirst(index)][this.get2dSecond(index)] = true
-         this.my[0][0] = true
-        console.log(this.my)
-        let arr=this.my[0]
-        let arr1 = arr[0]
-        arr1=false
-        console.log(this.my)
-        // console.log()
-        // console.log(this.get2dFirst(index))
-        // console.log(this.get2dSecond(index))
-        console.log(this.my)
-        // this.my[0][0] = true
-        // console.log(this.my[this.get2dFirst(index)][this.get2dSecond(index)])
-        console.log(this.my[0][0])
-        console.log(this.my[0][1])
-        console.log(this.my[1][0])
-        console.log(this.my[1][1])
-        // console.log(this.my)
+        console.log(index)
+        console.log(this.get2dFirst(index))
+        console.log(this.get2dSecond(index))
+        this.my[this.get2dFirst(index)][this.get2dSecond(index)] = true
     }
     isWin(){
-        console.log("test")
+        if(this.checkLine()||this.checkDiagonal()){
+            console.log("get winner")
+            return true
+        }
     }
-    createInitial(){
-        let result = []
-        let temp = []
-        console.log(this.grid)
-        for(let j=0;j<this.grid;j++){
-            temp.push(false)
+    checkLine(){
+        for(let i =0;i<this.grid;i++){
+            let checkHorizontal = true
+            let checkVertical = true
+            for(let j=0;j<this.grid;j++){
+               if(this.my[i][j]=== false) {
+                   checkVertical=false
+               }
+            }
+            if(checkVertical===true){
+                console.log("get winner Horizontal")
+                return true
+            }
+            for(let j=0;j<this.grid;j++){
+                if(this.my[j][i]=== false) {
+                    checkHorizontal=false
+                }
+            }
+            if(checkHorizontal===true){
+                console.log("get winner Vertical")
+                return true
+            }
         }
-        for(let i=0;i<this.grid;i++){
-            result.push(temp)
+        return false
+    }
+    checkDiagonal() {
+        if (this.grid % 2 === 0) {
+            return false
+        } else {
+            let check = true
+            for (let i = 0, j = 0; i < this.grid; i++, j++) {
+                if (this.my[j][i] === false) {
+                    check = false
+                }
+            }
+            if (check === true) {
+                console.log("get winner Diagonal")
+                return true
+            }
+            check = true
+            for (let i = 0, j = this.grid-1; i < this.grid; i++, j--) {
+                if (this.my[j][i] === false) {
+                    check = false
+                }
+            }
+            if (check === true) {
+                console.log("get winner Diagonal 2")
+                return true
+            }
         }
-        // result = [[false,false],[false,false]]
-        // for (let i=0; i<3;i++){
-        //     let temp =new Array(3)
-        //     temp =temp.map(each => {
-        //         console.log("1111")
-        //         return false
-        //     })
-        //     console.log(temp)
-        // }
-        return result
+    }
+    createInitial(grid){
+        let arr = [];
+        let rows = grid
+        let cols =grid
+        // Creates all lines:
+        for(let i=0; i < rows; i++){
+
+            // Creates an empty line
+            arr.push([]);
+
+            // Adds cols to the empty line:
+            arr[i].push( new Array(cols));
+
+            for(let j=0; j < cols; j++){
+                // Initializes:
+                arr[i][j] = false
+            }
+        }
+        return arr;
     }
     get2dFirst(index){
-
         return Math.floor(index/this.grid)
     }
     get2dSecond(index){
-
         return index%this.grid
     }
-
 }
 class turn{
-    constructor(gird,numberPlayer) {
+    constructor(grid,numberPlayer) {
         this.grid = grid
         this.number = numberPlayer
-        this.round =1
+        this.round =0
+        this.hasWinner = false
+        this.draw = false
         for(let i=0;i<numberPlayer;i++){
-            // let player = new this.Player](grid);
             let player = new Player(grid)
             array.push(player)
         }
-        console.log(array)
     }
     turn(id){
-        let turnplay = this.round%this.number
-        let index = id
-        array[turnplay].place(index)
-        document.getElementById(id).setAttribute("background-color",array[turnplay].color)
-        document.getElementById(id).classList.add("place")
-        this.round +=1
+        let turnPlay = this.round % this.number
+        if(this.round===this.grid**2-1){
+            this.draw=true
+        }
+        let player = turnPlay+1
+        if(this.hasWinner===false || this.draw === true) {
+            let index = id
+            array[turnPlay].place(index)
+            if (array[turnPlay].isWin() === true) {
+                this.hasWinner=true
+                alert("Player "+player+"Is the Winner")
+            }
+            document.getElementById(id).style.backgroundColor = array[turnPlay].color
+            document.getElementById(id).setAttribute("empty", "false")
+            this.round += 1
+        }
+        else{
+            alert("Game is End")
+        }
     }
-    get2dFirst(index){
-        let result= Math.floor(index/this.grid)
+    getTurn(){
+        return this.round%this.number+1
     }
-    get2dSecond(index){
-        let result= index%this.grid
-    }
-
 }
-
-let manager = new turn(grid,numberOfPlayer)
-
-for(let i = 0; i<grid**2;i++){
-    let col = document.createElement("div")
-    let shape = document.createTextNode("-")
-    col.append(shape)
-    col.classList.add("col")
-    col.setAttribute("id",i)
-    col.addEventListener("click",()=>{
-            if(!col.classList.contains("place")){
+function initial(gridSize =3,number =2) {
+    let grid = parseInt(gridSize)
+    let numberOfPlayer = number
+    let htmlGrid = document.querySelector("#grid")
+    htmlGrid.classList.add('row-cols-'+grid)
+    let manager = new turn(grid, numberOfPlayer)
+    for (let i = 0; i < grid ** 2; i++) {
+        let col = document.createElement("div")
+        let shape = document.createTextNode("o")
+        col.append(shape)
+        col.classList.add("col")
+        col.setAttribute("id", i)
+        col.addEventListener("click", () => {
+            if (!col.getAttribute("empty","place")) {
                 let id = col.getAttribute("id")
+                document.querySelector("#whoPlay").innerHTML = "This is Player "+manager.getTurn()+" Turn"
                 manager.turn(id)
-            }else{
+            } else {
                 console.log("It already place")
             }
-
-    })
-    htmlGrid.appendChild(col)
+        })
+        htmlGrid.appendChild(col)
+    }
 }
-document.querySelector("#log").addEventListener("click",()=>{
-    console.log(array)
+    document.querySelector("#log").addEventListener("click", () => {
+        console.log(array)
+        console.log(manager)
+    })
+    document.querySelector("#clear").addEventListener("click", () => {
+        clear()
+    })
+function clear(){
+    document.querySelector("#grid").innerHTML =""
+    array = []
+    let grid = document.querySelector("#inputGrid").value
+    let player = document.querySelector("#inputNumberPlayer").value
+    if(grid <2 || player <1 ){
+        initial(3,2)
+    }else{
+        initial(grid,player)
+    }
+}
+initial(3,2)
+document.querySelector("#inputBtn").addEventListener("click",()=>{
+    clear()
 })
-// document.querySelector("#clear").addEventListener("click",()=>{
-//
-//     console.log(array)
-// })
