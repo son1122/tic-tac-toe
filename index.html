@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Tic Tac Toe</title>
+    <meta name="description" content="Game tic tac toe">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <h1>Tic Tac Toe</h1>
+</header>
+<main>
+    <form>
+        <button id="randomButton">Random Cats! Meow!</button>
+        <h2>or</h2>
+        <div id="category-keys">
+            <button id="searchButton">Find Cats! Meow!</button>
+            <select name="category">
+                <option value="">--Please choose a category--</option>
+                <option value="1">Hats</option>
+                <option value="2">Space</option>
+                <option value="4">Sunglasses</option>
+                <option value="5">Boxes</option>
+                <option value="7">Ties</option>
+                <option value="14">Sink</option>
+                <option value="15">Clothes</option>
+            </select>
+        </div>
+        <h2>or</h2>
+        <button id="searchCategory">Find Category</button>
+        <input type="text" id="text" name="fname">
+    </form>
+    <div class="randomCat">
+        <img src="" id="randomCatImage">
+    </div>
+    <div id="categoryCat">
+        <img src="" id="categoryCatImage">
+    </div>
+</main>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
