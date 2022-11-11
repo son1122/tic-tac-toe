@@ -109,11 +109,11 @@ class turn{
     }
     turn(id){
         let turnPlay = this.round % this.number
-        if(this.round===this.grid**2-1){
+        if(this.round===(this.grid**2-1)){
             this.draw=true
         }
         let player = turnPlay+1
-        if(this.hasWinner===false || this.draw === true) {
+        if(this.hasWinner===false && this.draw === false) {
             let index = id
             array[turnPlay].place(index)
             if (array[turnPlay].isWin() === true) {
