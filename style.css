@@ -1,0 +1,17 @@
+*{
+    text-align: center;
+}
+div{
+    font-size: larger;
+
+}
+#game{
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+.input-group{
+    margin-top: 3%;
+}
+h1{
+    margin-top: 5%;
+}

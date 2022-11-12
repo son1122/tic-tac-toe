@@ -140,7 +140,7 @@ function initial(gridSize =3,number =2) {
     let grid = parseInt(gridSize)
     let numberOfPlayer = number
     let htmlGrid = document.querySelector("#grid")
-    htmlGrid.classList.add('row-cols-'+grid)
+    htmlGrid.className = "row row-cols-"+grid
     let manager = new turn(grid, numberOfPlayer)
     for (let i = 0; i < grid ** 2; i++) {
         let col = document.createElement("div")
