@@ -6,9 +6,6 @@ class Player{
         this.color = "#"+Math.floor(Math.random()*16777215).toString(16);
     }
     place(index){
-        console.log(index)
-        console.log(this.get2dFirst(index))
-        console.log(this.get2dSecond(index))
         this.my[this.get2dFirst(index)][this.get2dSecond(index)] = true
     }
     isWin(){
@@ -101,6 +98,7 @@ class turn{
         this.number = numberPlayer
         this.round =0
         this.hasWinner = false
+        this.playerWinner =""
         this.draw = false
         for(let i=0;i<numberPlayer;i++){
             let player = new Player(grid)
@@ -114,18 +112,24 @@ class turn{
         }
         let player = turnPlay+1
         if(this.hasWinner===false && this.draw === false) {
-            let index = id
-            array[turnPlay].place(index)
+            array[turnPlay].place(id)
             if (array[turnPlay].isWin() === true) {
+                this.playerWinner=player
                 this.hasWinner=true
-                alert("Player "+player+"Is the Winner")
+                alert("Player "+player+" Is the Winner")
             }
             document.getElementById(id).style.backgroundColor = array[turnPlay].color
             document.getElementById(id).setAttribute("empty", "false")
             this.round += 1
         }
         else{
-            alert("Game is End")
+            if(this.hasWinner === true){
+                alert("Game is End Player "+this.playerWinner+" is The Winner")
+            }else{
+                alert("Game is End It Draw")
+            }
+
+
         }
     }
     getTurn(){
@@ -147,8 +151,8 @@ function initial(gridSize =3,number =2) {
         col.addEventListener("click", () => {
             if (!col.getAttribute("empty","place")) {
                 let id = col.getAttribute("id")
-                document.querySelector("#whoPlay").innerHTML = "This is Player "+manager.getTurn()+" Turn"
                 manager.turn(id)
+                document.querySelector("#whoPlay").innerHTML = "This is Player "+manager.getTurn()+" Turn"
             } else {
                 console.log("It already place")
             }
